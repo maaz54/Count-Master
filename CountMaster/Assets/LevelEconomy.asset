@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa2f00d73103d484ea948847e5ffef65, type: 3}
+  m_Name: LevelEconomy
+  m_EditorClassIdentifier: 
+  levelSettings:
+  - trackLenght: 500
+    trackWidth: 30
+    playerSpeed: 0
+    playerSpeedX: 0
+    hurdleSettings:
+    - hurdleIndex: 0
+      hurdlePos: {x: 10, y: 0, z: 40}
+    - hurdleIndex: 0
+      hurdlePos: {x: -10, y: 0, z: 80}
+    - hurdleIndex: 0
+      hurdlePos: {x: 10, y: 0, z: 150}
+    - hurdleIndex: 0
+      hurdlePos: {x: -10, y: 0, z: 200}
+    - hurdleIndex: 0
+      hurdlePos: {x: 10, y: 0, z: 280}
+    addPlayersProps:
+    - type: 1
+      addPlayers: 2
+      pos: {x: -10, y: 0, z: 80}
+    - type: 0
+      addPlayers: 20
+      pos: {x: -10, y: 0, z: 200}
+    - type: 1
+      addPlayers: 2
+      pos: {x: -10, y: 0, z: 300}
+    - type: 0
+      addPlayers: 50
+      pos: {x: 10, y: 0, z: 400}

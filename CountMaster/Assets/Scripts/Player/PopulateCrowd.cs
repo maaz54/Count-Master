@@ -11,6 +11,10 @@ public class PopulateCrowd : MonoBehaviour
     public List<PositionSlot> playerSlots;
     public bool canPlay = false;
     public List<Action> actions = new List<Action>();
+    public BoxCollider boxCollider;
+    
+    public float moveToPositionSpeed;
+
     void Start()
     {
         InstantiateCircle();
@@ -27,7 +31,7 @@ public class PopulateCrowd : MonoBehaviour
     void LevelFinish(bool isComplete)
     {
         canPlay = false;
-        Debug.Log("Level Finish "+(transform.childCount-1));
+        Debug.Log("Level Finish " + (transform.childCount - 1));
     }
 
 
@@ -52,35 +56,48 @@ public class PopulateCrowd : MonoBehaviour
         {
             GameManager._instance.LevelFinish(false);
         }
-        if (!Reseting)
-        {
-            StartCoroutine(ResetingCrowdPositions());
-        }
     }
     bool Reseting = false;
     IEnumerator ResetingCrowdPositions()
     {
         Reseting = true;
-
+        yield return new WaitForSeconds(.1f);
         for (int i = 0; i < playerSlots.Count; i++)
         {
-            if (playerSlots[i].player != null)
+            if (playerSlots[i].player != null && !playerSlots[i].player.canPlay) 
             {
                 for (int j = i; j < playerSlots.Count; j++)
                 {
+                    // if (playerSlots[j].player != null && playerSlots[j].player.transform.parent != null)
                     if (playerSlots[j].player != null && playerSlots[j].player.transform.parent != null)
                     {
                         playerSlots[i].player = playerSlots[j].player;
                         playerSlots[i].player.transform.DOKill();
-                        playerSlots[i].player.transform.DOLocalMove(playerSlots[i].position, 1);
+                        playerSlots[i].player.transform.DOLocalMove(playerSlots[i].position, moveToPositionSpeed);
                         playerSlots[j].player = null;
                         j = playerSlots.Count;
                     }
                 }
             }
         }
-        yield return new WaitForSeconds(3);
         Reseting = false;
+    }
+
+    void ColliderResizing()
+    {
+        if (transform.childCount - 1 < 25)
+        {
+            boxCollider.size = new Vector3(5, 1, 5);
+        }
+        else
+        {
+            float divider = ((transform.childCount - 1) / 25);
+            divider += 2;
+            float size = (transform.childCount - 1) / divider;
+            boxCollider.size = new Vector3(size, 1, size);
+
+        }
+
     }
 
 
@@ -103,11 +120,12 @@ public class PopulateCrowd : MonoBehaviour
                 // Player pl = Instantiate(playerPrefab, playerSlots[i].position, playerPrefab.transform.rotation, transform);
                 Player pl = Instantiate(playerPrefab);
                 pl.transform.parent = transform;
-                pl.transform.localPosition = playerSlots[i].position;
+                pl.transform.localPosition = Vector3.zero;
                 playerSlots[i].player = pl;
 
                 playerSlots[i].player.crowd = this;
-                
+                pl.transform.DOLocalMove(playerSlots[i].position,moveToPositionSpeed);
+
                 totalPlayer++;
                 nPlayers--;
             }
@@ -116,10 +134,9 @@ public class PopulateCrowd : MonoBehaviour
                 break;
             }
         }
-
+        ColliderResizing();
 
     }
-
     void InstantiateCircle()
     {
         float angle = 360f / (float)playersCount;
@@ -175,6 +192,7 @@ public class PopulateCrowd : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             AddPlayers(addPlayers);
+            ColliderResizing();
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -296,6 +314,17 @@ public class PopulateCrowd : MonoBehaviour
         playersCount = 4;
         radius = 1;
     }
+    private void OnTriggerExit(Collider col)
+    {
+        if (col.transform.CompareTag("hurdle"))
+        {
+            if (!Reseting)
+            {
+                StartCoroutine(ResetingCrowdPositions());
+            }
+        }
+    }
+
 }
 [System.Serializable]
 public class PositionSlot

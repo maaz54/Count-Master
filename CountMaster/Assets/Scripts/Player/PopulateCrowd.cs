@@ -12,8 +12,8 @@ public class PopulateCrowd : MonoBehaviour
     public bool canPlay = false;
     public List<Action> actions = new List<Action>();
     public BoxCollider boxCollider;
-    
     public float moveToPositionSpeed;
+    public bool finishLineCrossed = false;
 
     void Start()
     {
@@ -22,6 +22,7 @@ public class PopulateCrowd : MonoBehaviour
         GameManager._instance.levelStart += LevelStart;
         GameManager._instance.addPlayers += OnAddPlayers;
         GameManager._instance.levelFinish += LevelFinish;
+        GameManager._instance.finishLine += FinishLine;
         AddPlayers(addPlayers);
     }
     void LevelStart()
@@ -31,10 +32,14 @@ public class PopulateCrowd : MonoBehaviour
     void LevelFinish(bool isComplete)
     {
         canPlay = false;
-        Debug.Log("Level Finish " + (transform.childCount - 1));
     }
 
-
+    void FinishLine()
+    {
+        finishLineCrossed = true;
+        canPlay = false;
+        MakeTriangle();
+    }
 
     void OnAddPlayers(int addPl, PropAddPlayer.AddPlayerType type)
     {
@@ -54,7 +59,14 @@ public class PopulateCrowd : MonoBehaviour
         totalPlayer--;
         if (totalPlayer <= 0)
         {
-            GameManager._instance.LevelFinish(false);
+            if (finishLineCrossed)
+            {
+                GameManager._instance.LevelFinish(true);
+            }
+            else
+            {
+                GameManager._instance.LevelFinish(false);
+            }
         }
     }
     bool Reseting = false;
@@ -64,12 +76,12 @@ public class PopulateCrowd : MonoBehaviour
         yield return new WaitForSeconds(.1f);
         for (int i = 0; i < playerSlots.Count; i++)
         {
-            if (playerSlots[i].player != null && !playerSlots[i].player.canPlay) 
+            if (playerSlots[i].player != null && !playerSlots[i].player.canPlay)
             {
                 for (int j = i; j < playerSlots.Count; j++)
                 {
                     // if (playerSlots[j].player != null && playerSlots[j].player.transform.parent != null)
-                    if (playerSlots[j].player != null && playerSlots[j].player.transform.parent != null)
+                    if (playerSlots[j].player != null && playerSlots[j].player.canPlay)
                     {
                         playerSlots[i].player = playerSlots[j].player;
                         playerSlots[i].player.transform.DOKill();
@@ -94,10 +106,8 @@ public class PopulateCrowd : MonoBehaviour
             float divider = ((transform.childCount - 1) / 25);
             divider += 2;
             float size = (transform.childCount - 1) / divider;
-            boxCollider.size = new Vector3(size, 1, size);
-
+            boxCollider.size = new Vector3(size, boxCollider.size.y, size);
         }
-
     }
 
 
@@ -124,7 +134,8 @@ public class PopulateCrowd : MonoBehaviour
                 playerSlots[i].player = pl;
 
                 playerSlots[i].player.crowd = this;
-                pl.transform.DOLocalMove(playerSlots[i].position,moveToPositionSpeed);
+                pl.transform.DOKill();
+                pl.transform.DOLocalMove(playerSlots[i].position, moveToPositionSpeed);
 
                 totalPlayer++;
                 nPlayers--;
@@ -155,6 +166,42 @@ public class PopulateCrowd : MonoBehaviour
         playersCount += 4;
         radius += 1.1f;
 
+    }
+    void MakeTriangle()
+    {
+        transform.DOKill();
+        transform.DOLocalMove(Vector3.zero, moveToPositionSpeed);
+        List<Vector3> pos = TrianglePositions();
+        for (int i = 1; i < transform.childCount; i++)
+        {
+            // transform.GetChild(i).localPosition = new Vector3(pos[i - 1].x, pos[i - 1].y, 0);
+            transform.GetChild(i).DOKill();
+            transform.GetChild(i).DOLocalMove(new Vector3(pos[i - 1].x, pos[i - 1].y, 0), moveToPositionSpeed);
+        }
+    }
+    public int triangelXOffset;
+    public int triangelYOffset;
+    List<Vector3> TrianglePositions()
+    {
+        List<Vector3> trianglePos = new List<Vector3>();
+        int size = transform.childCount - 1;
+        int perLine = Mathf.CeilToInt(size / 5);
+        int x = -4;
+        int y = 0;
+
+        for (int i = 0; i < size / 2; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                Vector3 position = new Vector3(x, y);
+                trianglePos.Add(position);
+                x += triangelXOffset;
+            }
+            y += triangelYOffset;
+            x = -4;
+        }
+
+        return trianglePos;
     }
 
 
@@ -197,6 +244,10 @@ public class PopulateCrowd : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             DeletePlayers();
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            MakeTriangle();
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -316,11 +367,14 @@ public class PopulateCrowd : MonoBehaviour
     }
     private void OnTriggerExit(Collider col)
     {
-        if (col.transform.CompareTag("hurdle"))
+        if (canPlay)
         {
-            if (!Reseting)
+            if (col.transform.CompareTag("hurdle"))
             {
-                StartCoroutine(ResetingCrowdPositions());
+                if (!Reseting)
+                {
+                    StartCoroutine(ResetingCrowdPositions());
+                }
             }
         }
     }

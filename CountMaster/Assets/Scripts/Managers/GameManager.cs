@@ -10,19 +10,7 @@ public class GameManager : MonoBehaviour
     public static int LevelNo = 1;
 
 
-    #region Events
-    public event Action<bool> levelFinish;
-    public event Action levelStart;
-    public event Action<int, PropAddPlayer.AddPlayerType> addPlayers;
-    public event Action<ScreenEvents> screenEvent;
-    public enum ScreenEvents
-    {
-        MouseDown = 0,
-        MouseUp = 1,
-        DragBegins = 2,
-        DragEnds = 3
-    }
-    #endregion
+
     public static GameManager _instance;
     public bool isGameStart = false;
     void Awake()
@@ -33,6 +21,20 @@ public class GameManager : MonoBehaviour
     void CreateLevel()
     {
         level.CreateLevel(LevelNo);
+    }
+
+    #region Events
+    public event Action finishLine;
+    public event Action<bool> levelFinish;
+    public event Action levelStart;
+    public event Action<int, PropAddPlayer.AddPlayerType> addPlayers;
+    public event Action<ScreenEvents> screenEvent;
+    public enum ScreenEvents
+    {
+        MouseDown = 0,
+        MouseUp = 1,
+        DragBegins = 2,
+        DragEnds = 3
     }
 
     public void LevelFinish(bool isComplete)
@@ -49,6 +51,10 @@ public class GameManager : MonoBehaviour
         isGameStart = false;
         levelFinish?.Invoke(isComplete);
     }
+    public void FinishLine()
+    {
+        finishLine?.Invoke();
+    }
     public void LevelStart()
     {
         isGameStart = true;
@@ -62,5 +68,5 @@ public class GameManager : MonoBehaviour
     {
         screenEvent?.Invoke(eventType);
     }
-
+    #endregion
 }

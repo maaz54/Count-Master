@@ -7,6 +7,7 @@ public class PlayerMain : MonoBehaviour
     public bool canPlay = false;
     public Transform target;
     public float Speed;
+    public float trackLenght;
     private void Start()
     {
         GameManager._instance.levelStart += GameStart;
@@ -15,10 +16,15 @@ public class PlayerMain : MonoBehaviour
 
     private void Update()
     {
-        if(canPlay)
+        if (canPlay)
         {
             // transform.position = Vector3.Lerp(transform.position,target.position,Speed*Time.deltaTime);
-            transform.Translate(transform.forward*Speed*Time.deltaTime);
+            transform.Translate(transform.forward * Speed * Time.deltaTime);
+            if (transform.position.z > trackLenght)
+            {
+                canPlay = false;
+                GameManager._instance.LevelFinish(true);
+            }
         }
     }
 
@@ -26,6 +32,7 @@ public class PlayerMain : MonoBehaviour
     {
         canPlay = true;
         target = GameManager._instance.level.finishLineTransform;
+        trackLenght = GameManager._instance.level.TrackTotalLenght;
 
     }
     void levelComplete(bool isComplete)

@@ -8,11 +8,11 @@ public class LevelSetting
 
     public float trackLenght;
     public float trackWidth = 10;
-
     public float playerSpeed;
     public float playerSpeedX;
     public List<hurdleSetting> hurdleSettings;
     public List<AddPlayersProps> addPlayersProps;
+
 
 
 }

@@ -11,10 +11,10 @@ public class Level : MonoBehaviour
     public Transform propAddPlayer;
     public GameObject finishLine;
     public GameObject track;
-
+    public GameObject ladderObject;
 
     public Transform finishLineTransform;
-
+    public float TrackTotalLenght;
 
     public void CreateLevel(int levelNo)
     {
@@ -22,6 +22,7 @@ public class Level : MonoBehaviour
         // CreateEnemies(levelNo);
         TrackSize(gameSetting.levelSettings[levelNo - 1].trackLenght, gameSetting.levelSettings[levelNo - 1].trackWidth, levelNo);
         CreateHurdles(levelNo);
+        TrackTotalLenght =gameSetting.levelSettings[levelNo - 1].trackLenght+25f;
     }
 
 
@@ -43,10 +44,14 @@ public class Level : MonoBehaviour
             GameObject go = Instantiate(propAddPlayer.gameObject);
             PropAddPlayer pp = go.GetComponentInChildren<PropAddPlayer>();
             go.transform.position = gameSetting.levelSettings[levelNo - 1].addPlayersProps[i].pos;
-            pp.addPlayers =gameSetting.levelSettings[levelNo - 1].addPlayersProps[i].addPlayers;
-            pp.propType =gameSetting.levelSettings[levelNo - 1].addPlayersProps[i].type;
+            pp.addPlayers = gameSetting.levelSettings[levelNo - 1].addPlayersProps[i].addPlayers;
+            pp.propType = gameSetting.levelSettings[levelNo - 1].addPlayersProps[i].type;
             go.transform.parent = levelThings;
         }
+
+
+
+
 
     }
     void TrackSize(float trackLenght, float trackwidth, int levelNo)
@@ -61,12 +66,19 @@ public class Level : MonoBehaviour
 
         GameObject finish = Instantiate(finishLine);
         Vector3 finishlinePos = Vector3.zero;
-        finishlinePos.z = trackLenght - 3;
+        finishlinePos.z = trackLenght - 50;
         finish.transform.position = finishlinePos;
         // finishLine.transform.parent = levelThings;
         finishLineTransform = finish.transform;
-        finishLineTransform.parent=levelThings;
+        finishLineTransform.parent = levelThings;
 
+
+        GameObject ladder = Instantiate(ladderObject);
+        Vector3 ladderPos = Vector3.zero;
+        ladderPos.z = trackLenght - 1f;
+        ladderPos.y = -1f;
+        ladder.transform.position = ladderPos;
+        ladder.transform.parent = levelThings;
 
     }
 

@@ -41,3 +41,33 @@ MonoBehaviour:
     - type: 0
       addPlayers: 50
       pos: {x: 10, y: 0, z: 400}
+  Levels:
+  - levelSettings:
+    - trackLenght: 500
+      trackWidth: 300
+      playerSpeed: 0
+      playerSpeedX: 0
+      hurdleSettings:
+      - hurdleIndex: 0
+        hurdlePos: {x: 10, y: 0, z: 40}
+      - hurdleIndex: 0
+        hurdlePos: {x: -10, y: 0, z: 80}
+      - hurdleIndex: 0
+        hurdlePos: {x: 10, y: 0, z: 150}
+      - hurdleIndex: 0
+        hurdlePos: {x: -10, y: 0, z: 200}
+      - hurdleIndex: 0
+        hurdlePos: {x: 10, y: 0, z: 280}
+      addPlayersProps:
+      - type: 1
+        addPlayers: 0
+        pos: {x: -10, y: 0, z: 80}
+      - type: 0
+        addPlayers: 0
+        pos: {x: -10, y: 0, z: 200}
+      - type: 1
+        addPlayers: 0
+        pos: {x: -10, y: 0, z: 300}
+      - type: 0
+        addPlayers: 0
+        pos: {x: 10, y: 0, z: 400}

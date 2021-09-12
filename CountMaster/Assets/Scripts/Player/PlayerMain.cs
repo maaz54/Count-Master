@@ -12,13 +12,23 @@ public class PlayerMain : MonoBehaviour
     {
         GameManager._instance.levelStart += GameStart;
         GameManager._instance.levelFinish += levelComplete;
+        GameManager._instance.enemyAround += EnemyAround;
     }
-
+    void EnemyAround(bool isEnemyAround, EnemyPatch patch)
+    {
+        if (isEnemyAround)
+        {
+            canPlay = false;
+        }
+        else
+        {
+            canPlay = true;
+        }
+    }
     private void Update()
     {
         if (canPlay)
         {
-            // transform.position = Vector3.Lerp(transform.position,target.position,Speed*Time.deltaTime);
             transform.Translate(transform.forward * Speed * Time.deltaTime);
             if (transform.position.z > trackLenght)
             {

@@ -5,31 +5,57 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     public GameSetting gameSetting;
-
-
     public GameObject[] hurdles;
     public Transform propAddPlayer;
     public GameObject finishLine;
     public GameObject track;
     public GameObject ladderObject;
-
+    public EnemyPatch enemyPatch;
+    public Enemy EnemyPrefabe;
     public Transform finishLineTransform;
     public float TrackTotalLenght;
+
+    public Color[] ladderColors;
+    public int ladderSteps;
+
+    [SerializeField]
+    PlayerMain _mainPlayer;
+    public PlayerMain MainPlayer
+    {
+        get
+        {
+            if (_mainPlayer == null)
+            {
+                _mainPlayer = FindObjectOfType<PlayerMain>();
+            }
+            return _mainPlayer;
+        }
+    }
 
     public void CreateLevel(int levelNo)
     {
         // PlayerSetting(levelNo);
-        // CreateEnemies(levelNo);
         TrackSize(gameSetting.levelSettings[levelNo - 1].trackLenght, gameSetting.levelSettings[levelNo - 1].trackWidth, levelNo);
         CreateHurdles(levelNo);
-        TrackTotalLenght =gameSetting.levelSettings[levelNo - 1].trackLenght+25f;
+        CreateEnemies(levelNo);
+
     }
 
 
     void PlayerSetting(int levelNo)
     {
     }
-
+    void CreateEnemies(int levelNo)
+    {
+        for (int i = 0; i < gameSetting.levelSettings[levelNo - 1].enemyPatches.Count; i++)
+        {
+            EnemyPatch patch = Instantiate(enemyPatch);
+            patch.transform.position = gameSetting.levelSettings[levelNo - 1].enemyPatches[i].pos;
+            patch.transform.parent = levelThings;
+            patch.totalEnemy = gameSetting.levelSettings[levelNo - 1].enemyPatches[i].enemyCount;
+            patch.InstantiatePLayers();
+        }
+    }
     void CreateHurdles(int levelNo)
     {
         for (int i = 0; i < gameSetting.levelSettings[levelNo - 1].hurdleSettings.Count; i++)
@@ -48,11 +74,6 @@ public class Level : MonoBehaviour
             pp.propType = gameSetting.levelSettings[levelNo - 1].addPlayersProps[i].type;
             go.transform.parent = levelThings;
         }
-
-
-
-
-
     }
     void TrackSize(float trackLenght, float trackwidth, int levelNo)
     {
@@ -66,7 +87,7 @@ public class Level : MonoBehaviour
 
         GameObject finish = Instantiate(finishLine);
         Vector3 finishlinePos = Vector3.zero;
-        finishlinePos.z = trackLenght - 50;
+        finishlinePos.z = trackLenght - 100;
         finish.transform.position = finishlinePos;
         // finishLine.transform.parent = levelThings;
         finishLineTransform = finish.transform;
@@ -80,6 +101,27 @@ public class Level : MonoBehaviour
         ladder.transform.position = ladderPos;
         ladder.transform.parent = levelThings;
 
+        GameObject ladderStep = ladder.transform.GetChild(0).gameObject;
+        GameObject finishObject = ladder.transform.GetChild(1).gameObject;
+        Vector3 steps = ladderStep.transform.localPosition;
+        int colorIndex = 0;
+        for (int i = 0; i < ladderSteps; i++)
+        {
+            steps.y += 4;
+            steps.z += 4;
+            GameObject step = Instantiate(ladderStep);
+            step.transform.parent = ladder.transform;
+            step.transform.localPosition = steps;
+            step.GetComponent<MeshRenderer>().material.color = ladderColors[colorIndex];
+            colorIndex++;
+            if (colorIndex > ladderColors.Length - 1)
+            {
+                colorIndex = 0;
+            }
+        }
+        steps.y += 2.5f;
+        finishObject.transform.localPosition = steps;
+        TrackTotalLenght = finishObject.transform.position.z;
     }
 
 
@@ -94,12 +136,6 @@ public class Level : MonoBehaviour
         //{
         //    Destroy(enemyHolder.transform.GetChild(i).gameObject);
         //}
-
-    }
-
-
-    void CreateEnemies(int levelNo)
-    {
 
     }
 

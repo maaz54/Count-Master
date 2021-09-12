@@ -13,7 +13,11 @@ public class PopulateCrowd : MonoBehaviour
     public List<Action> actions = new List<Action>();
     public BoxCollider boxCollider;
     public float moveToPositionSpeed;
+    public float moveToTriangleSpeed;
     public bool finishLineCrossed = false;
+
+    // this list is use to object pooling
+    public List<Player> deadPlayer;
 
     void Start()
     {
@@ -23,7 +27,27 @@ public class PopulateCrowd : MonoBehaviour
         GameManager._instance.addPlayers += OnAddPlayers;
         GameManager._instance.levelFinish += LevelFinish;
         GameManager._instance.finishLine += FinishLine;
+        GameManager._instance.enemyAround += EnemyAround;
         AddPlayers(addPlayers);
+    }
+
+    void EnemyAround(bool isEnemyAround, EnemyPatch patch)
+    {
+        if (isEnemyAround)
+        {
+            canPlay = false;
+            transform.DOKill();
+            transform.DOLocalMove(Vector3.zero, moveToPositionSpeed);
+        }
+        else
+        {
+            canPlay = true;
+            ResetingCrowdPositions();
+            if (!Reseting)
+            {
+                StartCoroutine(ResetingCrowdAlignemnts());
+            }
+        }
     }
     void LevelStart()
     {
@@ -54,7 +78,7 @@ public class PopulateCrowd : MonoBehaviour
         }
     }
 
-    public void PlayerDeduct()
+    public void PlayerDeduct(Player pl)
     {
         totalPlayer--;
         if (totalPlayer <= 0)
@@ -68,12 +92,26 @@ public class PopulateCrowd : MonoBehaviour
                 GameManager._instance.LevelFinish(false);
             }
         }
+
+        deadPlayer.Add(pl);
     }
+
+    void ResetingCrowdPositions()
+    {
+        for (int i = 0; i < playerSlots.Count; i++)
+        {
+            if (playerSlots[i].player != null && playerSlots[i].player.canPlay)
+            {
+                playerSlots[i].player.transform.DOKill();
+                playerSlots[i].player.transform.DOLocalMove(playerSlots[i].position, moveToPositionSpeed);
+            }
+        }
+    }
+
     bool Reseting = false;
-    IEnumerator ResetingCrowdPositions()
+    IEnumerator ResetingCrowdAlignemnts()
     {
         Reseting = true;
-        yield return new WaitForSeconds(.1f);
         for (int i = 0; i < playerSlots.Count; i++)
         {
             if (playerSlots[i].player != null && !playerSlots[i].player.canPlay)
@@ -91,7 +129,10 @@ public class PopulateCrowd : MonoBehaviour
                     }
                 }
             }
+            yield return new WaitForSeconds(moveToPositionSpeed / playerSlots.Count);
+
         }
+        yield return new WaitForSeconds(moveToPositionSpeed);
         Reseting = false;
     }
 
@@ -128,7 +169,18 @@ public class PopulateCrowd : MonoBehaviour
             if (playerSlots[i].player == null || playerSlots[i].player.transform.parent == null)
             {
                 // Player pl = Instantiate(playerPrefab, playerSlots[i].position, playerPrefab.transform.rotation, transform);
-                Player pl = Instantiate(playerPrefab);
+                Player pl;
+                if (deadPlayer.Count > 0)
+                {
+                    pl = deadPlayer[0];
+                    deadPlayer.RemoveAt(0);
+                    pl.gameObject.SetActive(true);
+                }
+                else
+                {
+                    pl = Instantiate(playerPrefab);
+                }
+                pl.EnablePlayer();
                 pl.transform.parent = transform;
                 pl.transform.localPosition = Vector3.zero;
                 playerSlots[i].player = pl;
@@ -169,6 +221,19 @@ public class PopulateCrowd : MonoBehaviour
     }
     void MakeTriangle()
     {
+        // transform.DOKill();
+        // transform.DOLocalMove(Vector3.zero, moveToPositionSpeed);
+        // List<Vector3> pos = TrianglePositions();
+        // for (int i = 1; i < transform.childCount; i++)
+        // {
+        //     // transform.GetChild(i).localPosition = new Vector3(pos[i - 1].x, pos[i - 1].y, 0);
+        //     transform.GetChild(i).DOKill();
+        //     transform.GetChild(i).DOLocalMove(new Vector3(pos[i - 1].x, pos[i - 1].y, 0), moveToTriangleSpeed);
+        // }
+        StartCoroutine(IMakeTriangle());
+    }
+    IEnumerator IMakeTriangle()
+    {
         transform.DOKill();
         transform.DOLocalMove(Vector3.zero, moveToPositionSpeed);
         List<Vector3> pos = TrianglePositions();
@@ -176,7 +241,8 @@ public class PopulateCrowd : MonoBehaviour
         {
             // transform.GetChild(i).localPosition = new Vector3(pos[i - 1].x, pos[i - 1].y, 0);
             transform.GetChild(i).DOKill();
-            transform.GetChild(i).DOLocalMove(new Vector3(pos[i - 1].x, pos[i - 1].y, 0), moveToPositionSpeed);
+            transform.GetChild(i).DOLocalMove(new Vector3(pos[i - 1].x, pos[i - 1].y, 0), moveToTriangleSpeed);
+            yield return new WaitForSeconds(moveToPositionSpeed / transform.childCount);
         }
     }
     public int triangelXOffset;
@@ -186,19 +252,19 @@ public class PopulateCrowd : MonoBehaviour
         List<Vector3> trianglePos = new List<Vector3>();
         int size = transform.childCount - 1;
         int perLine = Mathf.CeilToInt(size / 5);
-        int x = -4;
+        int x = -6;
         int y = 0;
 
-        for (int i = 0; i < size / 2; i++)
+        for (int i = 0; i < size / 5; i++)
         {
-            for (int j = 0; j < 6; j++)
+            for (int j = 0; j < 8; j++)
             {
                 Vector3 position = new Vector3(x, y);
                 trianglePos.Add(position);
                 x += triangelXOffset;
             }
             y += triangelYOffset;
-            x = -4;
+            x = -6;
         }
 
         return trianglePos;
@@ -235,6 +301,7 @@ public class PopulateCrowd : MonoBehaviour
         }
 
 
+
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -253,7 +320,7 @@ public class PopulateCrowd : MonoBehaviour
         {
             if (!Reseting)
             {
-                StartCoroutine(ResetingCrowdPositions());
+                StartCoroutine(ResetingCrowdAlignemnts());
             }
         }
 
@@ -373,7 +440,7 @@ public class PopulateCrowd : MonoBehaviour
             {
                 if (!Reseting)
                 {
-                    StartCoroutine(ResetingCrowdPositions());
+                    StartCoroutine(ResetingCrowdAlignemnts());
                 }
             }
         }

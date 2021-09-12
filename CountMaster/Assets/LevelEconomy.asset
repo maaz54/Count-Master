@@ -13,34 +13,59 @@ MonoBehaviour:
   m_Name: LevelEconomy
   m_EditorClassIdentifier: 
   levelSettings:
-  - trackLenght: 500
+  - trackLenght: 900
     trackWidth: 30
     playerSpeed: 0
     playerSpeedX: 0
     hurdleSettings:
-    - hurdleIndex: 0
-      hurdlePos: {x: 10, y: 0, z: 40}
-    - hurdleIndex: 0
-      hurdlePos: {x: -10, y: 0, z: 80}
-    - hurdleIndex: 0
-      hurdlePos: {x: 10, y: 0, z: 150}
-    - hurdleIndex: 0
+    - hurdleIndex: 3
+      hurdlePos: {x: 11, y: 0, z: 60}
+    - hurdleIndex: 3
+      hurdlePos: {x: 3, y: 0, z: 60}
+    - hurdleIndex: 4
       hurdlePos: {x: -10, y: 0, z: 200}
-    - hurdleIndex: 0
-      hurdlePos: {x: 10, y: 0, z: 280}
+    - hurdleIndex: 2
+      hurdlePos: {x: 10, y: 0, z: 250}
+    - hurdleIndex: 4
+      hurdlePos: {x: -10, y: 0, z: 300}
+    - hurdleIndex: 1
+      hurdlePos: {x: 0, y: 0, z: 450}
+    - hurdleIndex: 4
+      hurdlePos: {x: -10, y: 0, z: 550}
+    - hurdleIndex: 1
+      hurdlePos: {x: 0, y: 0, z: 600}
     addPlayersProps:
+    - type: 0
+      addPlayers: 30
+      pos: {x: -10, y: 0, z: 100}
+    - type: 0
+      addPlayers: 30
+      pos: {x: 10, y: 0, z: 350}
+    - type: 0
+      addPlayers: 30
+      pos: {x: -10, y: 0, z: 650}
     - type: 1
       addPlayers: 2
-      pos: {x: -10, y: 0, z: 80}
+      pos: {x: 10, y: 0, z: 180}
     - type: 0
-      addPlayers: 20
-      pos: {x: -10, y: 0, z: 200}
-    - type: 1
-      addPlayers: 2
-      pos: {x: -10, y: 0, z: 300}
+      addPlayers: 30
+      pos: {x: -10, y: 0, z: 230}
     - type: 0
-      addPlayers: 50
-      pos: {x: 10, y: 0, z: 400}
+      addPlayers: 5
+      pos: {x: 10, y: 0, z: 300}
+    - type: 0
+      addPlayers: 30
+      pos: {x: 10, y: 0, z: 500}
+    enemyPatches:
+    - enemyCount: 20
+      pos: {x: 0, y: 0, z: 150}
+      type: 0
+    - enemyCount: 30
+      pos: {x: 0, y: 0, z: 400}
+      type: 0
+    - enemyCount: 30
+      pos: {x: 0, y: 0, z: 700}
+      type: 0
   Levels:
   - levelSettings:
     - trackLenght: 500
@@ -71,3 +96,34 @@ MonoBehaviour:
       - type: 0
         addPlayers: 0
         pos: {x: 10, y: 0, z: 400}
+      enemyPatches: []
+  - levelSettings:
+    - trackLenght: 500
+      trackWidth: 300
+      playerSpeed: 0
+      playerSpeedX: 0
+      hurdleSettings:
+      - hurdleIndex: 0
+        hurdlePos: {x: 10, y: 0, z: 40}
+      - hurdleIndex: 0
+        hurdlePos: {x: -10, y: 0, z: 80}
+      - hurdleIndex: 0
+        hurdlePos: {x: 10, y: 0, z: 150}
+      - hurdleIndex: 0
+        hurdlePos: {x: -10, y: 0, z: 200}
+      - hurdleIndex: 0
+        hurdlePos: {x: 10, y: 0, z: 280}
+      addPlayersProps:
+      - type: 1
+        addPlayers: 0
+        pos: {x: -10, y: 0, z: 80}
+      - type: 0
+        addPlayers: 0
+        pos: {x: -10, y: 0, z: 200}
+      - type: 1
+        addPlayers: 0
+        pos: {x: -10, y: 0, z: 300}
+      - type: 0
+        addPlayers: 0
+        pos: {x: 10, y: 0, z: 400}
+      enemyPatches: []

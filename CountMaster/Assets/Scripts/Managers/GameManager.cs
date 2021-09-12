@@ -8,9 +8,6 @@ public class GameManager : MonoBehaviour
 
     public Level level;
     public static int LevelNo = 1;
-
-
-
     public static GameManager _instance;
     public bool isGameStart = false;
     void Awake()
@@ -28,6 +25,7 @@ public class GameManager : MonoBehaviour
     public event Action<bool> levelFinish;
     public event Action levelStart;
     public event Action<int, PropAddPlayer.AddPlayerType> addPlayers;
+    public event Action <bool,EnemyPatch> enemyAround;
     public event Action<ScreenEvents> screenEvent;
     public enum ScreenEvents
     {
@@ -67,6 +65,11 @@ public class GameManager : MonoBehaviour
     public void ScreenEvent(ScreenEvents eventType)
     {
         screenEvent?.Invoke(eventType);
+    }
+
+    public void EnemyAround(bool isEnemyAround,EnemyPatch enemyPatch)
+    {
+        enemyAround?.Invoke(isEnemyAround,enemyPatch);
     }
     #endregion
 }

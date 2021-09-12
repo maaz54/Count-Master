@@ -12,10 +12,18 @@ public class LevelSetting
     public float playerSpeedX;
     public List<hurdleSetting> hurdleSettings;
     public List<AddPlayersProps> addPlayersProps;
-
-
+    public List<EnemyPatches> enemyPatches;
+}
+[System.Serializable]
+public class EnemyPatches
+{
+    public int enemyCount;
+    public Vector3 pos;
+    public EnemyPatch.EnemyType type;
 
 }
+
+
 [System.Serializable]
 public class AddPlayersProps
 {

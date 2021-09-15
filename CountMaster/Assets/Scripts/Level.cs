@@ -53,7 +53,7 @@ public class Level : MonoBehaviour
             patch.transform.position = gameSetting.levelSettings[levelNo - 1].enemyPatches[i].pos;
             patch.transform.parent = levelThings;
             patch.totalEnemy = gameSetting.levelSettings[levelNo - 1].enemyPatches[i].enemyCount;
-            patch.InstantiatePLayers();
+            patch.InstantiatePLayers(gameSetting.levelSettings[levelNo - 1].enemyPatches[i].type);
         }
     }
     void CreateHurdles(int levelNo)

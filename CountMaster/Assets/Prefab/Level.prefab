@@ -156,7 +156,19 @@ MonoBehaviour:
   EnemyPrefabe: {fileID: 6572654485704650219, guid: 1e7f30f3ea471b744a0719fd303be41f,
     type: 3}
   finishLineTransform: {fileID: 0}
+  buildingObjects:
+  - {fileID: 2783255023578110749, guid: 0e45f89eeea70084fb596e15182a0cfd, type: 3}
+  - {fileID: 2937620200572712680, guid: 94400a886f713e241aad6307794a9244, type: 3}
+  - {fileID: 6247188958602773732, guid: 1beb746d5c325f746a7fc6518c7dc9e0, type: 3}
   TrackTotalLenght: 0
+  ladderColors:
+  - {r: 0.28627452, g: 0.29803923, b: 0.6901961, a: 0}
+  - {r: 0.7764706, g: 0.5411765, b: 0.7411765, a: 0}
+  - {r: 1, g: 0.60784316, b: 0.42352942, a: 0}
+  - {r: 0.48235294, g: 0.7882353, b: 0.8235294, a: 0}
+  - {r: 0.95686275, g: 0.7764706, b: 0.3019608, a: 0}
+  - {r: 0.9490196, g: 0.5058824, b: 0.43529412, a: 0}
+  ladderSteps: 20
   _mainPlayer: {fileID: 0}
   levelThings: {fileID: 803286325562251497}
   levelNo: 1

@@ -13,6 +13,7 @@ public class Level : MonoBehaviour
     public EnemyPatch enemyPatch;
     public Enemy EnemyPrefabe;
     public Transform finishLineTransform;
+    public GameObject[] buildingObjects;
     public float TrackTotalLenght;
 
     public Color[] ladderColors;
@@ -38,9 +39,67 @@ public class Level : MonoBehaviour
         TrackSize(gameSetting.levelSettings[levelNo - 1].trackLenght, gameSetting.levelSettings[levelNo - 1].trackWidth, levelNo);
         CreateHurdles(levelNo);
         CreateEnemies(levelNo);
+        CreateBackground();
+    }
+    [Header("Background Settings")]
+
+    public float startXpos;
+    public float startYpos;
+    public float buildingXOffset;
+    public float buildingZOffset = 30;
+    public int noOfRows;
+    public void CreateBackground()
+    {
+        Vector3 rightPos = Vector3.zero;
+        if (buildingZOffset < 1)
+        {
+            buildingZOffset = 30;
+        }
+        rightPos.x = startXpos;
+        rightPos.y = startYpos;
+        while (rightPos.z < gameSetting.levelSettings[levelNo - 1].trackLenght + 100)
+        {
+            GameObject go = null;
+            rightPos.x = startXpos;
+            rightPos.y = startYpos;
+            for (int i = 0; i < noOfRows; i++)
+            {
+                int randomObj = Random.Range(0, buildingObjects.Length);
+                go = Instantiate(buildingObjects[randomObj]);
+                go.transform.position = rightPos;
+                rightPos.x += buildingXOffset;
+                rightPos.y = Random.Range(-50, -20);
+            }
+            rightPos.z += buildingZOffset;
+        }
+
+
+        rightPos = Vector3.zero;
+        if (buildingZOffset < 1)
+        {
+            buildingZOffset = 30;
+        }
+        rightPos.x = -startXpos;
+        rightPos.y = startYpos;
+        while (rightPos.z < gameSetting.levelSettings[levelNo - 1].trackLenght + 100)
+        {
+            GameObject go = null;
+            rightPos.x = -startXpos;
+            rightPos.y = startYpos;
+            for (int i = 0; i < noOfRows; i++)
+            {
+                int randomObj = Random.Range(0, buildingObjects.Length);
+                go = Instantiate(buildingObjects[randomObj]);
+                go.transform.position = rightPos;
+                rightPos.x -= buildingXOffset;
+                rightPos.y = Random.Range(-50, -20);
+            }
+            rightPos.z += buildingZOffset;
+        }
+
+
 
     }
-
 
     void PlayerSetting(int levelNo)
     {

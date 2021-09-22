@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameSetting : ScriptableObject
 {
     public List<LevelSetting> levelSettings;
-    public List<LevelData> Levels;
+   // public List<LevelData> Levels;
 }
 
 [System.Serializable]

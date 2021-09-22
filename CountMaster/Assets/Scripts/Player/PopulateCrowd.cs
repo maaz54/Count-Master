@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 using System;
 public class PopulateCrowd : MonoBehaviour
 {
@@ -33,21 +34,24 @@ public class PopulateCrowd : MonoBehaviour
 
     void EnemyAround(bool isEnemyAround, EnemyPatch patch)
     {
-        if (isEnemyAround)
+        AddEnqueue(() =>
         {
-            canPlay = false;
-            transform.DOKill();
-            transform.DOLocalMove(Vector3.zero, moveToPositionSpeed);
-        }
-        else
-        {
-            canPlay = true;
-            ResetingCrowdPositions();
-            if (!Reseting)
+            if (isEnemyAround)
             {
-                StartCoroutine(ResetingCrowdAlignemnts());
+                canPlay = false;
+                transform.DOKill();
+                transform.DOLocalMove(Vector3.zero, moveToPositionSpeed);
             }
-        }
+            else
+            {
+                canPlay = true;
+                ResetingCrowdPositions();
+                if (!Reseting)
+                {
+                    StartCoroutine(ResetingCrowdAlignemnts());
+                }
+            }
+        });
     }
     void LevelStart()
     {
@@ -64,6 +68,7 @@ public class PopulateCrowd : MonoBehaviour
         canPlay = false;
         MakeTriangle();
     }
+
 
     void OnAddPlayers(int addPl, PropAddPlayer.AddPlayerType type)
     {
@@ -114,7 +119,7 @@ public class PopulateCrowd : MonoBehaviour
         Reseting = true;
         for (int i = 0; i < playerSlots.Count; i++)
         {
-            if (playerSlots[i].player != null && !playerSlots[i].player.canPlay)
+            if (playerSlots[i].player != null && !playerSlots[i].player.canPlay) // 
             {
                 for (int j = i; j < playerSlots.Count; j++)
                 {
@@ -122,15 +127,17 @@ public class PopulateCrowd : MonoBehaviour
                     if (playerSlots[j].player != null && playerSlots[j].player.canPlay)
                     {
                         playerSlots[i].player = playerSlots[j].player;
-                        playerSlots[i].player.transform.DOKill();
-                        playerSlots[i].player.transform.DOLocalMove(playerSlots[i].position, moveToPositionSpeed);
                         playerSlots[j].player = null;
                         j = playerSlots.Count;
                     }
                 }
             }
-            yield return new WaitForSeconds(moveToPositionSpeed / playerSlots.Count);
-
+            if (playerSlots[i].player != null && playerSlots[i].player.canPlay)
+            {
+                playerSlots[i].player.transform.DOKill();
+                playerSlots[i].player.transform.DOLocalMove(playerSlots[i].position, moveToPositionSpeed);
+                yield return new WaitForSeconds(moveToPositionSpeed / playerSlots.Count);
+            }
         }
         yield return new WaitForSeconds(moveToPositionSpeed);
         Reseting = false;
@@ -138,67 +145,71 @@ public class PopulateCrowd : MonoBehaviour
 
     void ColliderResizing()
     {
-        if (transform.childCount - 1 < 25)
-        {
-            boxCollider.size = new Vector3(5, 1, 5);
-        }
-        else
-        {
-            float divider = ((transform.childCount - 1) / 25);
-            divider += 2;
-            float size = (transform.childCount - 1) / divider;
-            boxCollider.size = new Vector3(size, boxCollider.size.y, size);
-        }
+        AddEnqueue(() =>
+          {
+              if (transform.childCount - 1 < 25)
+              {
+                  boxCollider.size = new Vector3(5, 1, 5);
+              }
+              else
+              {
+                  float divider = ((transform.childCount - 1) / 25);
+                  divider += 2;
+                  float size = (transform.childCount - 1) / divider;
+                  boxCollider.size = new Vector3(size, boxCollider.size.y, size);
+              }
+          });
     }
 
 
     public void AddPlayers(int inc)
     {
-
-        int nPlayers = inc;
-        int positionsNeed = totalPlayer + nPlayers;
-
-        while (playerSlots.Count < positionsNeed)
+        AddEnqueue(() =>
         {
-            InstantiateCircle();
-        }
+            int nPlayers = inc;
+            int positionsNeed = totalPlayer + nPlayers;
 
-        for (int i = 0; i < playerSlots.Count; i++)
-        {
-            // if (playerSlots[i].player == null)
-            if (playerSlots[i].player == null || playerSlots[i].player.transform.parent == null)
+            while (playerSlots.Count < positionsNeed)
             {
-                // Player pl = Instantiate(playerPrefab, playerSlots[i].position, playerPrefab.transform.rotation, transform);
-                Player pl;
-                if (deadPlayer.Count > 0)
-                {
-                    pl = deadPlayer[0];
-                    deadPlayer.RemoveAt(0);
-                    pl.gameObject.SetActive(true);
-                }
-                else
-                {
-                    pl = Instantiate(playerPrefab);
-                }
-                pl.EnablePlayer();
-                pl.transform.parent = transform;
-                pl.transform.localPosition = Vector3.zero;
-                playerSlots[i].player = pl;
-
-                playerSlots[i].player.crowd = this;
-                pl.transform.DOKill();
-                pl.transform.DOLocalMove(playerSlots[i].position, moveToPositionSpeed);
-
-                totalPlayer++;
-                nPlayers--;
+                InstantiateCircle();
             }
-            if (nPlayers < 1)
+
+            for (int i = 0; i < playerSlots.Count; i++)
             {
-                break;
-            }
-        }
-        ColliderResizing();
+                // if (playerSlots[i].player == null)
+                if (playerSlots[i].player == null || playerSlots[i].player.transform.parent == null)
+                {
+                    // Player pl = Instantiate(playerPrefab, playerSlots[i].position, playerPrefab.transform.rotation, transform);
+                    Player pl;
+                    if (deadPlayer.Count > 0)
+                    {
+                        pl = deadPlayer[0];
+                        deadPlayer.RemoveAt(0);
+                        pl.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        pl = Instantiate(playerPrefab);
+                    }
+                    pl.EnablePlayer();
+                    pl.transform.parent = transform;
+                    pl.transform.localPosition = Vector3.zero;
+                    playerSlots[i].player = pl;
 
+                    playerSlots[i].player.crowd = this;
+                    pl.transform.DOKill();
+                    pl.transform.DOLocalMove(playerSlots[i].position, moveToPositionSpeed);
+
+                    totalPlayer++;
+                    nPlayers--;
+                }
+                if (nPlayers < 1)
+                {
+                    break;
+                }
+            }
+            ColliderResizing();
+        });
     }
     void InstantiateCircle()
     {
@@ -230,7 +241,10 @@ public class PopulateCrowd : MonoBehaviour
         //     transform.GetChild(i).DOKill();
         //     transform.GetChild(i).DOLocalMove(new Vector3(pos[i - 1].x, pos[i - 1].y, 0), moveToTriangleSpeed);
         // }
-        StartCoroutine(IMakeTriangle());
+        AddEnqueue(() =>
+        {
+            StartCoroutine(IMakeTriangle());
+        });
     }
     IEnumerator IMakeTriangle()
     {
@@ -238,6 +252,7 @@ public class PopulateCrowd : MonoBehaviour
         transform.DOLocalMove(Vector3.zero, moveToPositionSpeed);
         List<Vector3> pos = TrianglePositions();
         for (int i = 1; i < transform.childCount; i++)
+        // for (int i = transform.childCount - 1; i >= 0; --i)
         {
             // transform.GetChild(i).localPosition = new Vector3(pos[i - 1].x, pos[i - 1].y, 0);
             transform.GetChild(i).DOKill();
@@ -438,12 +453,37 @@ public class PopulateCrowd : MonoBehaviour
         {
             if (col.transform.CompareTag("hurdle"))
             {
-                if (!Reseting)
+                AddEnqueue(() =>
                 {
-                    StartCoroutine(ResetingCrowdAlignemnts());
-                }
+                    if (!Reseting)
+                    {
+                        StartCoroutine(ResetingCrowdAlignemnts());
+                    }
+                });
             }
         }
+    }
+
+    Queue action_Queue = new Queue();
+    bool isQueueProcessing = false;
+    void AddEnqueue(Action action)
+    {
+        action_Queue.Enqueue(action);
+        if (!isQueueProcessing)
+        {
+            StartCoroutine(ProcessQueue());
+        }
+    }
+    IEnumerator ProcessQueue()
+    {
+        isQueueProcessing = true;
+        while (action_Queue.Count > 0)
+        {
+            var action = action_Queue.Dequeue() as Action;
+            action();
+            yield return new WaitForEndOfFrame();
+        }
+        isQueueProcessing = false;
     }
 
 }

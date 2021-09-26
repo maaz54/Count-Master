@@ -16,9 +16,9 @@ RenderSettings:
   serializedVersion: 9
   m_Fog: 1
   m_FogColor: {r: 0.7164471, g: 0.86174005, b: 0.8679245, a: 1}
-  m_FogMode: 3
+  m_FogMode: 1
   m_FogDensity: 0.005
-  m_LinearFogStart: 0
+  m_LinearFogStart: 100
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
@@ -923,6 +923,12 @@ MonoBehaviour:
   dragBegins: 0
   touchControl: 0
   xboundary: 15
+--- !u!4 &1711751097 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 914056818892445651, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+    type: 3}
+  m_PrefabInstance: {fileID: 803286326267989888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1883821989
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,6 +1050,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 803286325562251496, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 803286326755618058, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
         type: 3}
       propertyPath: m_Name
@@ -1109,6 +1120,26 @@ PrefabInstance:
       propertyPath: _mainPlayer
       value: 
       objectReference: {fileID: 1902551371}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: levelThings
+      value: 
+      objectReference: {fileID: 1711751097}
+    - target: {fileID: 914056818892445651, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 914056818892445651, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 914056818892445651, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.015
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02c14fcbaee897f41b8609d2b2b3a48c, type: 3}
 --- !u!1001 &8526378782681509026

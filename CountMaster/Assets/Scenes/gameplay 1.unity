@@ -1106,9 +1106,62 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
         type: 3}
+      propertyPath: noOfRows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: startXpos
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: startYpos
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
       propertyPath: _mainPlayer
       value: 
       objectReference: {fileID: 1902551371}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: ladderSteps
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: buildingXOffset
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: buildingZOffset
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: buildingObjects.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: buildingObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 2783255023578110749, guid: 0e45f89eeea70084fb596e15182a0cfd,
+        type: 3}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: buildingObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 2937620200572712680, guid: 94400a886f713e241aad6307794a9244,
+        type: 3}
+    - target: {fileID: 803286326755618060, guid: 02c14fcbaee897f41b8609d2b2b3a48c,
+        type: 3}
+      propertyPath: buildingObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 6247188958602773732, guid: 1beb746d5c325f746a7fc6518c7dc9e0,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02c14fcbaee897f41b8609d2b2b3a48c, type: 3}
 --- !u!1001 &8526378782681509026

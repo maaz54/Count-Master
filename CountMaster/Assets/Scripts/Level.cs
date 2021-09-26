@@ -18,6 +18,8 @@ public class Level : MonoBehaviour
 
     public Color[] ladderColors;
     public int ladderSteps;
+    public GameObject playerDeathParticls;
+    public GameObject enemyDeathParticls;
 
     [SerializeField]
     PlayerMain _mainPlayer;

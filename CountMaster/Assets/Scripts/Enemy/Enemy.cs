@@ -30,9 +30,20 @@ public class Enemy : MonoBehaviour
         //GameManager._instance.enemyAround -= EnemyAround;
         isDead = true;
         canPlay = false;
+        DeathEffect();
     }
-
-
+    ParticleSystem deathParticle;
+    void DeathEffect()
+    {
+        deathParticle = Pooling.Instance.SpawnDeathEnemyParticle();
+        if (deathParticle != null)
+        {
+            Vector3 ptPos = transform.position;
+            ptPos.y = 0.1f;
+            deathParticle.transform.position = ptPos;
+            deathParticle.Play();
+        }
+    }
     public float speed;
     void Update()
     {

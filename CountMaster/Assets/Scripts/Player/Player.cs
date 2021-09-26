@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public float randomLimit;
     public bool fightWithEnemy = false;
     EnemyPatch enemyPatch;
+    ParticleSystem deathParticle;
     private void Start()
     {
         return;
@@ -138,7 +139,7 @@ public class Player : MonoBehaviour
         {
             if (!enemyPatch.enemies[i].isDead)
             {
-                Debug.Log("Enemy Found");
+            
                 return enemyPatch.enemies[i];
                 break;
             }
@@ -194,9 +195,11 @@ public class Player : MonoBehaviour
                     Despawn();
                 }
                 col.transform.GetComponent<Enemy>().Dead();
+                DeathEffect();
             }
         }
     }
+
     private void OnCollisionEnter(Collision col)
     {
         if (canPlay)
@@ -218,9 +221,22 @@ public class Player : MonoBehaviour
                 transform.parent = null;
                 gameObject.SetActive(false);
                 crowd.PlayerDeduct(this);
+
+                DeathEffect();
                 Despawn();
             }
 
+        }
+    }
+    void DeathEffect()
+    {
+        deathParticle = Pooling.Instance.SpawnDeathPlayerParticle();
+        if (deathParticle != null)
+        {
+            Vector3 ptPos = transform.position;
+            ptPos.y = 0.05f;
+            deathParticle.transform.position = ptPos;
+            deathParticle.Play();
         }
     }
 

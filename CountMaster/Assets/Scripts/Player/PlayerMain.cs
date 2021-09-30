@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMain : MonoBehaviour
 {
+
+    
     public bool canPlay = false;
     public Transform target;
     public float Speed;

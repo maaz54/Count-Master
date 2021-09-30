@@ -13,13 +13,16 @@ public class Player : MonoBehaviour
     public bool fightWithEnemy = false;
     EnemyPatch enemyPatch;
     ParticleSystem deathParticle;
+    public SkinnedMeshRenderer meshRenderer;
     private void Start()
     {
+
         return;
         GameManager._instance.levelStart += GameStart;
         GameManager._instance.levelFinish += Gamefinish;
         GameManager._instance.finishLine += FinishLine;
         GameManager._instance.enemyAround += EnemyAround;
+        GameManager._instance.addPlayers += OnAddPlayers;
         if (GameManager._instance.isGameStart)
         {
             GameStart();
@@ -27,22 +30,59 @@ public class Player : MonoBehaviour
         characeterTr = transform.GetChild(0);
     }
 
-
+    Vector3 initPos = Vector3.zero;
     private void OnEnable()
     {
+        mainColor = meshRenderer.materials[0].color;
         //EnablePlayer();
+        if (colorAnim != null)
+        {
+            StopCoroutine(colorAnim);
+        }
+        colorAnim = StartCoroutine(ColorBlinkAnim());
     }
-    public void EnablePlayer()
+
+    void OnAddPlayers(int addPl, PropAddPlayer.AddPlayerType type)
+    {
+        if (colorAnim != null)
+        {
+            StopCoroutine(colorAnim);
+        }
+        colorAnim = StartCoroutine(ColorBlinkAnim());
+    }
+    Color mainColor;//7FD6FD
+    public Color blinkColor;
+    Coroutine colorAnim;
+    IEnumerator ColorBlinkAnim()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (i % 2 == 0)
+            {
+                meshRenderer.materials[0].color = blinkColor;
+            }
+            else
+            {
+                meshRenderer.materials[0].color = mainColor;
+            }
+            yield return new WaitForSeconds(.05f);
+        }
+        yield return new WaitForSeconds(.05f);
+        meshRenderer.materials[0].color = mainColor;
+    }
+    public void EnablePlayer(Vector3 initPos)
     {
         GameManager._instance.levelStart += GameStart;
         GameManager._instance.levelFinish += Gamefinish;
         GameManager._instance.finishLine += FinishLine;
         GameManager._instance.enemyAround += EnemyAround;
+        GameManager._instance.addPlayers += OnAddPlayers;
         if (GameManager._instance.isGameStart)
         {
             GameStart();
         }
         characeterTr = transform.GetChild(0);
+        this.initPos = initPos;
     }
     private void OnDisable()
     {
@@ -54,6 +94,7 @@ public class Player : MonoBehaviour
         GameManager._instance.levelFinish -= Gamefinish;
         GameManager._instance.finishLine -= FinishLine;
         GameManager._instance.enemyAround -= EnemyAround;
+        GameManager._instance.addPlayers -= OnAddPlayers;
         enemyCollideCount = 0;
         fightWithEnemy = false;
         finishLineCrossed = false;
@@ -80,6 +121,8 @@ public class Player : MonoBehaviour
             canPlay = true;
             fightWithEnemy = false;
             transform.localEulerAngles = Vector3.zero;
+            transform.DOKill();
+            transform.DOLocalMove(initPos, .5f);
         }
     }
     public float randomMovementSpeed = 1;
@@ -139,7 +182,7 @@ public class Player : MonoBehaviour
         {
             if (!enemyPatch.enemies[i].isDead)
             {
-            
+
                 return enemyPatch.enemies[i];
                 break;
             }

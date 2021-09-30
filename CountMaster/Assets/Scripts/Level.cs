@@ -37,6 +37,7 @@ public class Level : MonoBehaviour
 
     public void CreateLevel(int levelNo)
     {
+        this.levelNo = levelNo; 
         // PlayerSetting(levelNo);
         TrackSize(gameSetting.levelSettings[levelNo - 1].trackLenght, gameSetting.levelSettings[levelNo - 1].trackWidth, levelNo);
         CreateHurdles(levelNo);
@@ -207,8 +208,8 @@ public class Level : MonoBehaviour
     public Transform levelThings;
 
 
-#if UNITY_EDITOR
     public int levelNo;
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.L))

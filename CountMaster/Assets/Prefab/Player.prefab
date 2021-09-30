@@ -175,6 +175,8 @@ MonoBehaviour:
   crowd: {fileID: 0}
   randomLimit: 1
   fightWithEnemy: 0
+  meshRenderer: {fileID: 1308915819194293968}
+  blinkColor: {r: 0, g: 0.63529414, b: 0.91764706, a: 0}
   randomMovementSpeed: 1
   fightSpeed: 1
 --- !u!65 &6199893735545886311

@@ -81,6 +81,7 @@ public class PopulateCrowd : MonoBehaviour
             int inc = totalPlayer * addPl;
             AddPlayers(inc);
         }
+        
     }
 
     public void PlayerDeduct(Player pl)
@@ -149,7 +150,7 @@ public class PopulateCrowd : MonoBehaviour
           {
               if (transform.childCount - 1 < 25)
               {
-                  boxCollider.size = new Vector3(5, 1, 5);
+                  boxCollider.size = new Vector3(5, 3, 5);
               }
               else
               {
@@ -158,6 +159,7 @@ public class PopulateCrowd : MonoBehaviour
                   float size = (transform.childCount - 1) / divider;
                   boxCollider.size = new Vector3(size, boxCollider.size.y, size);
               }
+              boxCollider.center = new Vector3(0, 1.5f, 0);
           });
     }
 
@@ -191,7 +193,7 @@ public class PopulateCrowd : MonoBehaviour
                     {
                         pl = Instantiate(playerPrefab);
                     }
-                    pl.EnablePlayer();
+                    pl.EnablePlayer(playerSlots[i].position);
                     pl.transform.parent = transform;
                     pl.transform.localPosition = Vector3.zero;
                     playerSlots[i].player = pl;

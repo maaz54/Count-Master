@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class LevelSetting
 {
-
     public float trackLenght;
     public float trackWidth = 10;
     public float playerSpeed;
@@ -14,6 +13,12 @@ public class LevelSetting
     public List<AddPlayersProps> addPlayersProps;
     public List<EnemyPatches> enemyPatches;
 }
+[System.Serializable]
+public class CoinPatch
+{
+    public Vector3 pos;
+}
+
 [System.Serializable]
 public class EnemyPatches
 {

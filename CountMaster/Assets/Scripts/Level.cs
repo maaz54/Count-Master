@@ -37,7 +37,7 @@ public class Level : MonoBehaviour
 
     public void CreateLevel(int levelNo)
     {
-        this.levelNo = levelNo; 
+        this.levelNo = levelNo;
         // PlayerSetting(levelNo);
         TrackSize(gameSetting.levelSettings[levelNo - 1].trackLenght, gameSetting.levelSettings[levelNo - 1].trackWidth, levelNo);
         CreateHurdles(levelNo);
@@ -74,6 +74,7 @@ public class Level : MonoBehaviour
                 rightPos.y = Random.Range(-50, -20);
             }
             rightPos.z += buildingZOffset;
+            go.transform.parent = levelThings;
         }
 
 
@@ -98,6 +99,7 @@ public class Level : MonoBehaviour
                 rightPos.y = Random.Range(-50, -20);
             }
             rightPos.z += buildingZOffset;
+            go.transform.parent = levelThings;
         }
 
 
@@ -139,13 +141,33 @@ public class Level : MonoBehaviour
     }
     void TrackSize(float trackLenght, float trackwidth, int levelNo)
     {
-        Vector3 trackPos = new Vector3(0, -1, 0);
-        Vector3 trackScale = new Vector3(10, 1, 1);
-        trackScale.z = trackLenght;
-        trackScale.x = trackwidth;
-        trackPos.z = (trackLenght / 2) - 1;
-        track.transform.localScale = trackScale;
-        track.transform.position = trackPos;
+        // Vector3 trackPos = new Vector3(0, -1, 0);
+        // Vector3 trackScale = new Vector3(10, 1, 1);
+        // trackScale.z = trackLenght;
+        // trackScale.x = trackwidth;
+        // trackPos.z = (trackLenght / 2) - 1;
+        // track.transform.localScale = trackScale;
+        // track.transform.position = trackPos;
+
+
+        // Vector3 trackScale = new Vector3(10, 1, 1);
+        // trackScale.z = trackLenght;
+        // trackScale.x = trackwidth;
+        // track.transform.localScale = trackScale;
+        float trackZ = 153.4f;
+        Vector3 trackpos = track.transform.position;
+        while (trackZ < trackLenght)
+        {
+            GameObject tr = Instantiate(track);
+            trackpos.z = trackZ;
+            tr.transform.position = trackpos;
+            //tr.transform.localScale = trackScale;
+            trackZ += (153.4f * 2);
+            tr.transform.parent = levelThings;
+        }
+
+
+
 
         GameObject finish = Instantiate(finishLine);
         Vector3 finishlinePos = Vector3.zero;

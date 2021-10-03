@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelSettings:
   - trackLenght: 1200
-    trackWidth: 30
+    trackWidth: 10
     playerSpeed: 0
     playerSpeedX: 0
     hurdleSettings:

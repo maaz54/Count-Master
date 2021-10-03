@@ -5,7 +5,8 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public Animator animator;
-    void Start()
+    
+        void Start()
     {
         animator.Play("state1");
         GameManager._instance.finishLine += FinishLine;

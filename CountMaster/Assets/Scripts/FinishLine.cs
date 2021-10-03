@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FinishLine : MonoBehaviour
-{
-    public BoxCollider collider;
+{    public BoxCollider collider;
     public enum finishLineType
     {
         FinishLine,

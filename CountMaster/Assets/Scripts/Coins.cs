@@ -13,6 +13,7 @@ public class Coins : MonoBehaviour
             {
                 triggered = true;
                 StartCoroutine(CoinsAnim());
+                GameManager._instance.CoinsCollect(9);
             }
         }
     }
@@ -26,6 +27,7 @@ public class Coins : MonoBehaviour
             pos.z += 20;
 
             transform.GetChild(i).DOMove(pos,.5f);
+            SoundManager.instance.AddAndPOpSound(SoundManager.instance.collectSound);
             yield return new WaitForSeconds(.01f);
         }
     }

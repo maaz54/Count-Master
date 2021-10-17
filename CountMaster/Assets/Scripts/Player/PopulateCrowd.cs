@@ -29,7 +29,9 @@ public class PopulateCrowd : MonoBehaviour
         GameManager._instance.levelFinish += LevelFinish;
         GameManager._instance.finishLine += FinishLine;
         GameManager._instance.enemyAround += EnemyAround;
-        AddPlayers(addPlayers);
+        GameManager._instance.buyMoreCrowdWithCrowd += AddPlayers;
+        GameManager._instance.coinsCollect += AddCoins;
+        AddPlayers(StaticPrefs.NoOFPlayers);
     }
 
     void EnemyAround(bool isEnemyAround, EnemyPatch patch)
@@ -83,7 +85,13 @@ public class PopulateCrowd : MonoBehaviour
         }
         
     }
+    void AddCoins(int coins)
+    {
+        levelCoins += coins;
+    }
 
+    //level coins collected
+    int levelCoins=0;
     public void PlayerDeduct(Player pl)
     {
         totalPlayer--;
@@ -91,6 +99,7 @@ public class PopulateCrowd : MonoBehaviour
         {
             if (finishLineCrossed)
             {
+                GameManager._instance.CoinsCollect(levelCoins *perLinePlayer);
                 GameManager._instance.LevelFinish(true);
             }
             else
@@ -204,6 +213,7 @@ public class PopulateCrowd : MonoBehaviour
 
                     totalPlayer++;
                     nPlayers--;
+                    SoundManager.instance.AddAndPOpSound(SoundManager.instance.addPlayerSound);
                 }
                 if (nPlayers < 1)
                 {
@@ -264,11 +274,13 @@ public class PopulateCrowd : MonoBehaviour
     }
     public int triangelXOffset;
     public int triangelYOffset;
+    public int perLinePlayer;
     List<Vector3> TrianglePositions()
     {
         List<Vector3> trianglePos = new List<Vector3>();
         int size = transform.childCount - 1;
         int perLine = Mathf.CeilToInt(size / 5);
+        perLinePlayer = perLine;
         int x = -6;
         int y = 0;
 

@@ -12,6 +12,7 @@ public class LevelSetting
     public List<hurdleSetting> hurdleSettings;
     public List<AddPlayersProps> addPlayersProps;
     public List<EnemyPatches> enemyPatches;
+    public List<CoinPatch> coinPatches;
 }
 [System.Serializable]
 public class CoinPatch

@@ -14,6 +14,7 @@ public class Level : MonoBehaviour
     public Enemy EnemyPrefabe;
     public Transform finishLineTransform;
     public GameObject[] buildingObjects;
+    public GameObject coinsPatch;
     public float TrackTotalLenght;
 
     public Color[] ladderColors;
@@ -136,6 +137,13 @@ public class Level : MonoBehaviour
             go.transform.position = gameSetting.levelSettings[levelNo - 1].addPlayersProps[i].pos;
             pp.addPlayers = gameSetting.levelSettings[levelNo - 1].addPlayersProps[i].addPlayers;
             pp.propType = gameSetting.levelSettings[levelNo - 1].addPlayersProps[i].type;
+            go.transform.parent = levelThings;
+        }
+
+        for (int i = 0; i < gameSetting.levelSettings[levelNo - 1].coinPatches.Count; i++)
+        {
+            GameObject go = Instantiate(coinsPatch.gameObject);
+            go.transform.position = gameSetting.levelSettings[levelNo - 1].coinPatches[i].pos;
             go.transform.parent = levelThings;
         }
     }

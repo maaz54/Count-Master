@@ -66,3 +66,9 @@ MonoBehaviour:
     - enemyCount: 30
       pos: {x: 0, y: 0, z: 700}
       type: 0
+    coinPatches:
+    - pos: {x: -10, y: 0, z: 40}
+    - pos: {x: -10, y: 0, z: 60}
+    - pos: {x: 10, y: 0, z: 80}
+    - pos: {x: 10, y: 0, z: 100}
+    - pos: {x: -10, y: 0, z: 120}

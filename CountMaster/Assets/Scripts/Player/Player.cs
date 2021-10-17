@@ -257,6 +257,7 @@ public class Player : MonoBehaviour
                 p.z -= .5f;
                 transform.position = p;
                 Despawn();
+                SoundManager.instance.AddAndPOpSound(SoundManager.instance.addPlayerSound);
             }
             else if (col.transform.CompareTag("blade"))
             {
@@ -266,7 +267,8 @@ public class Player : MonoBehaviour
                 crowd.PlayerDeduct(this);
 
                 DeathEffect();
-                Despawn();
+                Despawn(); 
+
             }
 
         }
@@ -281,6 +283,7 @@ public class Player : MonoBehaviour
             deathParticle.transform.position = ptPos;
             deathParticle.Play();
         }
+        SoundManager.instance.AddAndPOpSound(SoundManager.instance.popSound);
     }
 
 }

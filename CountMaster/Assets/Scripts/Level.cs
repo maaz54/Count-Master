@@ -147,6 +147,7 @@ public class Level : MonoBehaviour
             go.transform.parent = levelThings;
         }
     }
+    public float trackZ;
     void TrackSize(float trackLenght, float trackwidth, int levelNo)
     {
         // Vector3 trackPos = new Vector3(0, -1, 0);
@@ -162,14 +163,16 @@ public class Level : MonoBehaviour
         // trackScale.z = trackLenght;
         // trackScale.x = trackwidth;
         // track.transform.localScale = trackScale;
-        float trackZ = 153.4f;
+        // float trackZ = 153.4f;
+        trackZ = 153.4f;
         Vector3 trackpos = track.transform.position;
-        while (trackZ < trackLenght)
+        while (trackZ < trackLenght +153.4f)
         {
             GameObject tr = Instantiate(track);
             trackpos.z = trackZ;
             tr.transform.position = trackpos;
             //tr.transform.localScale = trackScale;
+            // trackZ += (153.4f * 2);
             trackZ += (153.4f * 2);
             tr.transform.parent = levelThings;
         }

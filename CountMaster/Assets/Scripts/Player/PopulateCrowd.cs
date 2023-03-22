@@ -133,7 +133,6 @@ public class PopulateCrowd : MonoBehaviour
             {
                 for (int j = i; j < playerSlots.Count; j++)
                 {
-                    // if (playerSlots[j].player != null && playerSlots[j].player.transform.parent != null)
                     if (playerSlots[j].player != null && playerSlots[j].player.canPlay)
                     {
                         playerSlots[i].player = playerSlots[j].player;
@@ -187,10 +186,8 @@ public class PopulateCrowd : MonoBehaviour
 
             for (int i = 0; i < playerSlots.Count; i++)
             {
-                // if (playerSlots[i].player == null)
                 if (playerSlots[i].player == null || playerSlots[i].player.transform.parent == null)
                 {
-                    // Player pl = Instantiate(playerPrefab, playerSlots[i].position, playerPrefab.transform.rotation, transform);
                     Player pl;
                     if (deadPlayer.Count > 0)
                     {
@@ -230,10 +227,8 @@ public class PopulateCrowd : MonoBehaviour
         {
             Quaternion rotation = Quaternion.AngleAxis(i * angle, Vector3.up);
             Vector3 direction = rotation * Vector3.forward;
-            // Vector3 position = transform.localPosition + (direction * radius);
             Vector3 position = crowdPivot.localPosition + (direction * radius);
             // crowdPivot
-            //  Player pl = Instantiate(playerPrefab, position, playerPrefab.transform.rotation, transform);
             PositionSlot slot = new PositionSlot(position);
             playerSlots.Add(slot);
 
@@ -244,15 +239,6 @@ public class PopulateCrowd : MonoBehaviour
     }
     void MakeTriangle()
     {
-        // transform.DOKill();
-        // transform.DOLocalMove(Vector3.zero, moveToPositionSpeed);
-        // List<Vector3> pos = TrianglePositions();
-        // for (int i = 1; i < transform.childCount; i++)
-        // {
-        //     // transform.GetChild(i).localPosition = new Vector3(pos[i - 1].x, pos[i - 1].y, 0);
-        //     transform.GetChild(i).DOKill();
-        //     transform.GetChild(i).DOLocalMove(new Vector3(pos[i - 1].x, pos[i - 1].y, 0), moveToTriangleSpeed);
-        // }
         AddEnqueue(() =>
         {
             StartCoroutine(IMakeTriangle());
@@ -264,9 +250,7 @@ public class PopulateCrowd : MonoBehaviour
         transform.DOLocalMove(Vector3.zero, moveToPositionSpeed);
         List<Vector3> pos = TrianglePositions();
         for (int i = 1; i < transform.childCount; i++)
-        // for (int i = transform.childCount - 1; i >= 0; --i)
         {
-            // transform.GetChild(i).localPosition = new Vector3(pos[i - 1].x, pos[i - 1].y, 0);
             transform.GetChild(i).DOKill();
             transform.GetChild(i).DOLocalMove(new Vector3(pos[i - 1].x, pos[i - 1].y, 0), moveToTriangleSpeed);
             yield return new WaitForSeconds(moveToPositionSpeed / transform.childCount);
@@ -298,12 +282,6 @@ public class PopulateCrowd : MonoBehaviour
 
         return trianglePos;
     }
-
-
-
-    // radius 1.1
-    // +4
-
 
     public float radius = 1;
     public int playersCount = 4;
@@ -370,10 +348,6 @@ public class PopulateCrowd : MonoBehaviour
                 Vector3 pos = transform.localPosition;
                 pos.x = deltaPos.x;
 
-                //transform.localPosition = Vector3.Lerp(transform.localPosition,
-                //    new Vector3(pos.x, transform.localPosition.y, transform.localPosition.z),
-                //    speedX * Time.deltaTime
-                //    );
 
                 transformPos = new Vector3(pos.x, transformPos.y, transform.localPosition.z);
 
@@ -383,10 +357,9 @@ public class PopulateCrowd : MonoBehaviour
             {
 
                 Vector3 deltaPos = (Input.mousePosition - lastmousePos);
-                //Vector3 deltaPos = Input.mouseScrollDelta;
                 Vector3 pos = transform.localPosition;
                 pos.x += deltaPos.x;// / Screen.width;
-                transformPos.x = pos.x; //= new Vector3(pos.x, transformPos.y, transform.localPosition.z);
+                transformPos.x = pos.x; 
 
                 lastmousePos = Input.mousePosition;
             }

@@ -16,25 +16,12 @@ public class Player : MonoBehaviour
     public SkinnedMeshRenderer meshRenderer;
     private void Start()
     {
-
-        return;
-        GameManager._instance.levelStart += GameStart;
-        GameManager._instance.levelFinish += Gamefinish;
-        GameManager._instance.finishLine += FinishLine;
-        GameManager._instance.enemyAround += EnemyAround;
-        GameManager._instance.addPlayers += OnAddPlayers;
-        if (GameManager._instance.isGameStart)
-        {
-            GameStart();
-        }
-        characeterTr = transform.GetChild(0);
     }
 
     Vector3 initPos = Vector3.zero;
     private void OnEnable()
     {
         mainColor = meshRenderer.materials[0].color;
-        //EnablePlayer();
         if (colorAnim != null)
         {
             StopCoroutine(colorAnim);
@@ -164,7 +151,6 @@ public class Player : MonoBehaviour
         Vector3 origin = transform.position;
         origin.y += 1;
         origin.z += 1;
-        // if (Physics.Raycast(origin, transform.forward, out hit, 1))
         if (Physics.Raycast(origin, Vector3.forward, out hit, 1))
         {
             if (hit.transform.gameObject.tag == transform.tag)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LevelEconomy
   m_EditorClassIdentifier: 
   levelSettings:
-  - trackLenght: 1200
+  - trackLenght: 800
     trackWidth: 1
     playerSpeed: 0
     playerSpeedX: 0

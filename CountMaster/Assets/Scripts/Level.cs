@@ -39,7 +39,6 @@ public class Level : MonoBehaviour
     public void CreateLevel(int levelNo)
     {
         this.levelNo = levelNo;
-        // PlayerSetting(levelNo);
         TrackSize(gameSetting.levelSettings[levelNo - 1].trackLenght, gameSetting.levelSettings[levelNo - 1].trackWidth, levelNo);
         CreateHurdles(levelNo);
         CreateEnemies(levelNo);
@@ -150,20 +149,6 @@ public class Level : MonoBehaviour
     public float trackZ;
     void TrackSize(float trackLenght, float trackwidth, int levelNo)
     {
-        // Vector3 trackPos = new Vector3(0, -1, 0);
-        // Vector3 trackScale = new Vector3(10, 1, 1);
-        // trackScale.z = trackLenght;
-        // trackScale.x = trackwidth;
-        // trackPos.z = (trackLenght / 2) - 1;
-        // track.transform.localScale = trackScale;
-        // track.transform.position = trackPos;
-
-
-        // Vector3 trackScale = new Vector3(10, 1, 1);
-        // trackScale.z = trackLenght;
-        // trackScale.x = trackwidth;
-        // track.transform.localScale = trackScale;
-        // float trackZ = 153.4f;
         trackZ = 153.4f;
         Vector3 trackpos = track.transform.position;
         while (trackZ < trackLenght +153.4f)
@@ -171,23 +156,16 @@ public class Level : MonoBehaviour
             GameObject tr = Instantiate(track);
             trackpos.z = trackZ;
             tr.transform.position = trackpos;
-            //tr.transform.localScale = trackScale;
-            // trackZ += (153.4f * 2);
             trackZ += (153.4f * 2);
             tr.transform.parent = levelThings;
         }
-
-
-
 
         GameObject finish = Instantiate(finishLine);
         Vector3 finishlinePos = Vector3.zero;
         finishlinePos.z = trackLenght - 100;
         finish.transform.position = finishlinePos;
-        // finishLine.transform.parent = levelThings;
         finishLineTransform = finish.transform;
         finishLineTransform.parent = levelThings;
-
 
         GameObject ladder = Instantiate(ladderObject);
         Vector3 ladderPos = Vector3.zero;
@@ -227,20 +205,9 @@ public class Level : MonoBehaviour
         {
             Destroy(levelThings.GetChild(i).gameObject);
         }
-        //for (int i = 0; i < enemyHolder.transform.childCount; i++)
-        //{
-        //    Destroy(enemyHolder.transform.GetChild(i).gameObject);
-        //}
-
     }
 
-
-
-
-
     public Transform levelThings;
-
-
     public int levelNo;
 #if UNITY_EDITOR
     private void Update()

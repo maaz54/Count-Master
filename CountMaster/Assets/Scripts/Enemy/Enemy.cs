@@ -9,10 +9,7 @@ public class Enemy : MonoBehaviour
     Transform target;
     EnemyPatch enemyPatch;
     public Animator anim;
-    void Start()
-    {
-        // GameManager._instance.enemyAround += EnemyAround;
-    }
+
     public void EnemyAround(bool isEnemyAround, EnemyPatch patch)
     {
         enemyPatch = patch;
@@ -27,7 +24,6 @@ public class Enemy : MonoBehaviour
     {
         gameObject.SetActive(false);
         enemyPatch.DeductEnemy(this);
-        //GameManager._instance.enemyAround -= EnemyAround;
         isDead = true;
         canPlay = false;
         DeathEffect();
@@ -67,9 +63,6 @@ public class Enemy : MonoBehaviour
         RaycastHit hit;
         Vector3 origin = transform.position;
         origin.y += 1;
-        // origin.z += 1;
-        // if (Physics.Raycast(origin, transform.forward, out hit, 1))
-
 
         if (Physics.Raycast(origin, Vector3.forward, out hit, 1))
         {
